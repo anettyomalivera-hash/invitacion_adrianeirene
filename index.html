@@ -92,6 +92,8 @@ h2{font-size:2.1rem;color:var(--sage-d)}
 .nomatch{padding:14px 18px;color:var(--mute);font-size:.85rem;text-align:center}
 .private-status{margin:14px 0 0;color:var(--mute);font-size:.82rem;line-height:1.6}
 .private-status:empty{display:none}
+.retry-data{display:none;margin:12px auto 0;padding:9px 16px;border:1px solid var(--sage);border-radius:24px;background:#fff;color:var(--sage-d);font:400 .76rem 'Jost',sans-serif;cursor:pointer}
+.retry-data.visible{display:block}
 #result{display:none;margin-top:34px}
 #result.show{display:block;animation:rise 1s both}
 #result .hi{font:italic 1.1rem 'Cormorant Garamond',serif;color:var(--sage)}
@@ -187,7 +189,8 @@ footer .fs{position:relative;margin-top:10px;font-size:.66rem;letter-spacing:.3e
       <label class="field-label" for="guestInput">Nombre del invitado</label>
       <input id="guestInput" type="text" placeholder="Escribe tu nombre" autocomplete="off" aria-label="Busca tu nombre para consultar tu mesa" aria-autocomplete="list" aria-controls="sug" aria-expanded="false" role="combobox" disabled>
       <div id="sug" role="listbox"></div>
-      <p class="private-status" id="finderStatus" role="status" aria-live="polite">Cargando los datos de tu mesa…</p>
+      <p class="private-status" id="finderStatus" role="status" aria-live="polite">Preparando el acceso a tu mesa…</p>
+      <button class="retry-data" type="button" hidden>Reintentar carga</button>
       <div id="result" style="text-align:center">
         <div class="hi">Bienvenido(a)</div>
         <div class="nm" id="rName">—</div>
@@ -207,7 +210,8 @@ footer .fs{position:relative;margin-top:10px;font-size:.66rem;letter-spacing:.3e
         CONFIRMAR ASISTENCIA
       </button>
       <div class="hint" id="rsvpHint">Se abrirá WhatsApp con un mensaje ya redactado</div>
-      <p class="private-status" id="rsvpStatus" role="status" aria-live="polite">Cargando los datos de confirmación…</p>
+      <p class="private-status" id="rsvpStatus" role="status" aria-live="polite">Preparando la confirmación…</p>
+      <button class="retry-data" type="button" hidden>Reintentar carga</button>
     </div>
   </section>
 
@@ -234,11 +238,17 @@ function decodeBase64Url(value){
 async function loadPrivateData(){
   const access=new URLSearchParams(location.hash.slice(1)).get('access');
   if(!access)throw new Error('missing-link-key');
-  const response=await fetch('datos-privados.enc.json');
+  if(!globalThis.crypto?.subtle)throw new Error('crypto-unavailable');
+  const dataUrl=new URL('datos-privados.enc.json',document.baseURI);
+  dataUrl.searchParams.set('refresh',Date.now());
+  const response=await fetch(dataUrl,{cache:'no-store'});
   if(!response.ok)throw new Error('encrypted-data-unavailable');
   const envelope=await response.json();
   if(envelope.version!==1)throw new Error('unsupported-data-version');
-  const key=await crypto.subtle.importKey('raw',decodeBase64Url(access),{name:'AES-GCM'},false,['decrypt']);
+  let keyBytes;
+  try{keyBytes=decodeBase64Url(access)}catch{throw new Error('invalid-link-key')}
+  if(keyBytes.length!==32)throw new Error('invalid-link-key');
+  const key=await crypto.subtle.importKey('raw',keyBytes,{name:'AES-GCM'},false,['decrypt']);
   const clear=await crypto.subtle.decrypt({
     name:'AES-GCM',
     iv:decodeBase64Url(envelope.iv),
@@ -257,12 +267,37 @@ async function loadPrivateData(){
   $('rsvpStatus').textContent='';
 }
 
-loadPrivateData().catch(()=>{
-  const message='Abre la invitación desde el enlace completo que recibiste para consultar tu mesa y confirmar por WhatsApp.';
-  $('finderStatus').textContent=message;
-  $('rsvpStatus').textContent=message;
-  $('rsvpHint').hidden=true;
-});
+async function activatePrivateData(){
+  document.querySelectorAll('.retry-data').forEach(button=>{button.hidden=true;button.classList.remove('visible')});
+  $('finderStatus').textContent='Preparando el acceso a tu mesa…';
+  $('rsvpStatus').textContent='Preparando la confirmación…';
+  try{
+    await loadPrivateData();
+  }catch(error){
+    let message='No se pudieron cargar los datos privados. Comprueba tu conexión e inténtalo de nuevo.';
+    let canRetry=true;
+    if(error.message==='missing-link-key'){
+      message='WhatsApp abrió la invitación sin la clave de acceso. Vuelve al mensaje y abre el enlace completo; si estás dentro de WhatsApp, elige “Abrir en navegador”.';
+      canRetry=false;
+    }else if(error.message==='crypto-unavailable'){
+      message='Este navegador no permite validar el enlace. Abre la invitación en Chrome o Safari actualizado.';
+      canRetry=false;
+    }else if(error.message==='invalid-link-key'||error.name==='OperationError'){
+      message='La clave del enlace no coincide con los datos publicados. Puede que el enlace esté incompleto o que la publicación siga actualizándose; vuelve a abrir el enlace completo desde WhatsApp.';
+      canRetry=false;
+    }
+    $('finderStatus').textContent=message;
+    $('rsvpStatus').textContent=message;
+    $('rsvpHint').hidden=true;
+    document.querySelectorAll('.retry-data').forEach(button=>{
+      button.hidden=!canRetry;
+      button.classList.toggle('visible',canRetry);
+    });
+  }
+}
+
+document.querySelectorAll('.retry-data').forEach(button=>button.addEventListener('click',activatePrivateData));
+activatePrivateData();
 
 /* Sobre: se abre solo */
 window.addEventListener('load',()=>{
