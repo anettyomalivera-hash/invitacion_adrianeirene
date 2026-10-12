@@ -8,6 +8,7 @@ const sourcePath = path.join(directory, 'datos-privados.json');
 const keyPath = path.join(directory, '.invite-key');
 const outputPath = path.join(directory, 'datos-privados.enc.json');
 const aad = Buffer.from('invitacion-bodas-oro:v1');
+const rotateKey = process.argv.includes('--rotate-key');
 
 const source = await readFile(sourcePath, 'utf8');
 const secret = JSON.parse(source);
@@ -16,12 +17,17 @@ if (!Array.isArray(secret.invitados) || !secret.whatsappNumero) {
 }
 
 let key;
-try {
-  key = Buffer.from((await readFile(keyPath, 'utf8')).trim(), 'base64url');
-} catch (error) {
-  if (error.code !== 'ENOENT') throw error;
+if (rotateKey) {
   key = randomBytes(32);
   await writeFile(keyPath, key.toString('base64url'), { mode: 0o600 });
+} else {
+  try {
+    key = Buffer.from((await readFile(keyPath, 'utf8')).trim(), 'base64url');
+  } catch (error) {
+    if (error.code !== 'ENOENT') throw error;
+    key = randomBytes(32);
+    await writeFile(keyPath, key.toString('base64url'), { mode: 0o600 });
+  }
 }
 if (key.length !== 32) throw new Error('.invite-key no contiene una clave válida.');
 
@@ -46,4 +52,4 @@ await writeFile(outputPath, JSON.stringify({
   ciphertext: encrypted.toString('base64url')
 }, null, 2) + '\n');
 console.log(`Archivo cifrado y verificado: ${path.basename(outputPath)}`);
-console.log(`Fragmento que debes añadir al enlace: #access=${key.toString('base64url')}`);
+console.log('Código de acceso guardado en .invite-key. Compártelo en un mensaje separado, nunca en la URL.');
