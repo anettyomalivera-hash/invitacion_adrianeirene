@@ -297,6 +297,7 @@ async function activatePrivateData(){
 }
 
 document.querySelectorAll('.retry-data').forEach(button=>button.addEventListener('click',activatePrivateData));
+addEventListener('hashchange',activatePrivateData);
 activatePrivateData();
 
 /* Sobre: se abre solo */
