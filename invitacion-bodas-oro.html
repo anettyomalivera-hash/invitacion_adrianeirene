@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Aniversario · Adrián &amp; Irene</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FBF8F5;--ink:#393D38;--mute:#747A73;--sage:#79947D;--sage-d:#45634D;--gold:#B38A40;--rose:#A95F69;--rose-pale:#F8ECEA;--line:rgba(179,138,64,.4)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Jost',sans-serif;font-weight:300;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body.lock{overflow:hidden;height:100%}
+h1,h2{font-family:'Cormorant Garamond',serif;font-weight:400;margin:0}
+.script{font-family:'Pinyon Script',cursive}
+.lotus{color:var(--sage);display:block;overflow:visible}
+
+/* ---------- SOBRE ---------- */
+#intro{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 40%,#fff,var(--bg) 70%);transition:opacity 1.2s ease,visibility 1.2s}
+#intro.gone{opacity:0;visibility:hidden}
+#intro .bg-l{position:absolute;width:min(120vw,620px);left:50%;bottom:-8%;transform:translateX(-50%);opacity:.18}
+.env{position:relative;width:min(76vw,310px);aspect-ratio:3/2;perspective:1200px;animation:rise 1.2s cubic-bezier(.2,.8,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}}
+.env-body{position:absolute;inset:0;background:linear-gradient(160deg,#fff,#F3EFE6);border:1px solid var(--line);border-radius:3px;box-shadow:0 24px 60px rgba(75,99,80,.14)}
+.env-fold{position:absolute;inset:0;border-radius:3px;background:linear-gradient(135deg,transparent 49.6%,rgba(183,154,91,.28) 50%),linear-gradient(-135deg,transparent 49.6%,rgba(183,154,91,.28) 50%);z-index:4}
+.env-flap{position:absolute;top:0;left:0;width:100%;height:60%;background:linear-gradient(160deg,#F7F3EA,#E9E1CD);clip-path:polygon(0 0,100% 0,50% 78%);transform-origin:top;transition:transform 1.3s cubic-bezier(.6,0,.3,1);z-index:5}
+.env.open .env-flap{transform:rotateX(180deg)}
+.seal{position:absolute;top:39%;left:50%;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#E6D49B,#B79A5B 65%,#8E7438);box-shadow:0 4px 14px rgba(142,116,56,.45);display:flex;align-items:center;justify-content:center;color:#fff;z-index:6;transition:opacity .5s,transform .8s}
+.seal svg{width:30px;color:#fff}
+.env.open .seal{opacity:0;transform:scale(.4)}
+.letter{position:absolute;left:7%;right:7%;bottom:5%;height:72%;background:#fff;border:1px solid rgba(183,154,91,.2);border-radius:2px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;z-index:3;transform:translateY(4%);transition:transform 1.2s cubic-bezier(.2,.8,.2,1) .7s;text-align:center}
+.letter b{font:400 2rem 'Cormorant Garamond',serif;color:var(--gold)}
+.letter small{font-size:.58rem;letter-spacing:.3em;color:var(--mute)}
+.env.open .letter{transform:translateY(-34%)}
+.intro-names{margin-top:44px;font-size:2.1rem;color:var(--sage-d);animation:rise 1.2s .4s both}
+.intro-hint{margin-top:6px;font-size:.7rem;letter-spacing:.3em;color:var(--mute);animation:breathe 2.4s ease-in-out infinite}
+@keyframes breathe{50%{opacity:.35}}
+
+/* ---------- INVITACIÓN ---------- */
+main{opacity:0;transition:opacity 1.4s ease}
+main.show{opacity:1}
+section{position:relative;max-width:520px;margin:0 auto;padding:84px 32px;text-align:center}
+.hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-bottom:120px;overflow:hidden;max-width:none}
+.hero>*{position:relative;z-index:1}
+.hero .bg-top{position:absolute;z-index:0;width:min(130vw,640px);top:-60px;left:50%;transform:translateX(-50%) rotate(180deg);color:var(--rose);opacity:.2}
+.hero .bg-bot{position:absolute;z-index:0;width:min(150vw,720px);bottom:-70px;left:50%;transform:translateX(-50%);color:var(--sage);opacity:.24}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;color:var(--rose)}
+.fifty{font:300 clamp(8rem,38vw,12rem)/1 'Cormorant Garamond',serif;color:var(--gold);margin:6px 0 0;letter-spacing:-.02em}
+.sub{font-size:.72rem;letter-spacing:.5em;color:var(--sage-d);margin:-4px 0 0 .5em}
+.names{margin-top:30px;font-size:3.1rem;line-height:1.05;color:var(--ink)}
+.names .amp{display:block;font-size:2.4rem;color:var(--sage);margin:2px 0}
+.lede{max-width:310px;margin:26px auto 0;font:italic 300 1.1rem/1.7 'Cormorant Garamond',serif;color:var(--mute)}
+
+.cue{position:relative;z-index:2;display:flex;width:max-content;flex-direction:column;align-items:center;gap:6px;margin:28px auto 0;padding:12px 22px 10px;border-radius:40px;background:rgba(255,250,248,.94);border:1px solid rgba(169,95,105,.35);box-shadow:0 10px 30px rgba(113,75,79,.1);color:var(--rose);font-size:.68rem;letter-spacing:.3em;text-decoration:none;opacity:0;pointer-events:none;transition:opacity .8s ease,transform .6s}
+.cue.on{opacity:1;pointer-events:auto}
+.cue.off{opacity:0;pointer-events:none;transform:translateY(10px)}
+.cue svg{width:18px;height:18px;animation:bob 1.6s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(-2px)}50%{transform:translateY(5px)}}
+
+h2{font-size:2.1rem;color:var(--sage-d)}
+.orn{width:84px;margin:14px auto 30px;color:var(--gold)}
+.fade{opacity:0;transform:translateY(18px);transition:opacity 1s ease,transform 1s ease}
+.fade.in{opacity:1;transform:none}
+
+.cd{display:flex;justify-content:center;gap:clamp(14px,5vw,30px)}
+.cd div{min-width:56px}
+.cd .n{display:block;font:300 2.6rem/1 'Cormorant Garamond',serif;color:var(--gold)}
+.cd .l{display:block;margin-top:8px;font-size:.62rem;letter-spacing:.24em;color:var(--mute)}
+
+.info{display:grid;gap:26px}
+.info .t{font:italic 400 1rem 'Cormorant Garamond',serif;color:var(--sage)}
+.info .d{font:400 1.45rem/1.35 'Cormorant Garamond',serif;margin-top:2px}
+.info>div+div{padding-top:26px;border-top:1px solid var(--line)}
+.btn-line{display:inline-block;margin-top:30px;padding:12px 28px;border:1px solid var(--sage);border-radius:40px;color:var(--sage-d);text-decoration:none;font-size:.78rem;letter-spacing:.2em;transition:background .3s,color .3s}
+.btn-line:hover{background:var(--sage-d);color:#fff}
+
+.finder-wrap{position:relative;text-align:left}
+.field-label{display:block;margin:0 0 8px 2px;color:var(--sage-d);font-size:.72rem;letter-spacing:.12em}
+#guestInput{display:block;width:100%;height:54px;padding:13px 16px;border:1px solid rgba(169,95,105,.48);border-radius:6px;background:linear-gradient(145deg,#fff,var(--rose-pale));box-shadow:0 8px 22px rgba(102,70,74,.08);font:400 1.2rem 'Cormorant Garamond',serif;color:var(--ink);outline:none;text-align:left;transition:border-color .2s,box-shadow .2s,background .2s}
+#guestInput:disabled{opacity:.55}
+#guestInput:focus{border-color:var(--rose);background:#fff;box-shadow:0 0 0 3px rgba(169,95,105,.14),0 8px 22px rgba(102,70,74,.08)}
+#guestInput::placeholder{color:#98666A;font-style:italic}
+#sug{max-height:0;overflow:hidden;border:0;transition:max-height .3s;background:#fff;border-radius:8px;box-shadow:0 14px 40px rgba(75,99,80,.14);margin-top:8px}
+#sug.open{max-height:230px;overflow-y:auto;border:1px solid rgba(169,95,105,.22)}
+.s{display:block;width:100%;padding:13px 18px;border:0;background:#fff;text-align:left;font:400 1.1rem 'Cormorant Garamond',serif;cursor:pointer;border-bottom:1px solid rgba(169,95,105,.14)}
+.s:hover{background:var(--rose-pale)}
+.s b{color:var(--rose)}
+.s:last-child{border-bottom:0}
+.nomatch{padding:14px 18px;color:var(--mute);font-size:.85rem;text-align:center}
+.private-status{margin:14px 0 0;color:var(--mute);font-size:.82rem;line-height:1.6}
+.private-status:empty{display:none}
+#result{display:none;margin-top:34px}
+#result.show{display:block;animation:rise 1s both}
+#result .hi{font:italic 1.1rem 'Cormorant Garamond',serif;color:var(--sage)}
+#result .nm{font:400 1.7rem 'Cormorant Garamond',serif;margin-top:4px}
+#result .tb{font:300 4.2rem/1 'Cormorant Garamond',serif;color:var(--gold);margin-top:14px}
+#result small{display:block;font-size:.62rem;letter-spacing:.3em;color:var(--mute)}
+
+.rsvp-t{max-width:300px;margin:0 auto 28px;font:italic 300 1.1rem/1.7 'Cormorant Garamond',serif;color:var(--mute)}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:16px 34px;border:0;border-radius:40px;background:var(--sage-d);color:#fff;font:400 .8rem 'Jost',sans-serif;letter-spacing:.22em;cursor:pointer;box-shadow:0 14px 30px rgba(75,99,80,.25);transition:transform .3s,box-shadow .3s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 18px 34px rgba(75,99,80,.32)}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
+.btn svg{width:18px;height:18px}
+.hint{margin-top:14px;font-size:.72rem;color:var(--mute)}
+footer{position:relative;overflow:hidden;text-align:center;padding:60px 24px 110px}
+footer .bg-bot{position:absolute;width:min(130vw,640px);left:50%;bottom:-60px;transform:translateX(-50%);opacity:.18}
+footer .fh{position:relative;font-size:2.2rem;color:var(--gold)}
+footer .fs{position:relative;margin-top:10px;font-size:.66rem;letter-spacing:.3em;color:var(--mute)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body class="lock">
+
+<!-- Loto reutilizable -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="lotus" viewBox="-10 0 220 120">
+    <g fill="currentColor" fill-opacity=".07" stroke="currentColor" stroke-width="1" stroke-linejoin="round">
+      <path id="pt" d="M100 8C122 38 124 82 100 112C76 82 78 38 100 8Z" transform="rotate(-74 100 112)"/>
+      <path d="M100 8C122 38 124 82 100 112C76 82 78 38 100 8Z" transform="rotate(74 100 112)"/>
+      <path d="M100 8C122 38 124 82 100 112C76 82 78 38 100 8Z" transform="rotate(-38 100 112)"/>
+      <path d="M100 8C122 38 124 82 100 112C76 82 78 38 100 8Z" transform="rotate(38 100 112)"/>
+      <path d="M100 8C122 38 124 82 100 112C76 82 78 38 100 8Z"/>
+      <path d="M100 30C108 52 108 80 100 100C92 80 92 52 100 30Z" fill="none" stroke-opacity=".5"/>
+    </g>
+  </symbol>
+</svg>
+
+<!-- SOBRE (se abre solo) -->
+<div id="intro">
+  <svg class="lotus bg-l" viewBox="-10 0 220 120"><use href="#lotus"/></svg>
+  <div class="env" id="env">
+    <div class="env-body"></div>
+    <div class="letter"><b>50</b><small>AÑOS DE AMOR</small></div>
+    <div class="env-flap"></div>
+    <div class="env-fold"></div>
+    <div class="seal"><svg viewBox="-10 0 220 120"><use href="#lotus"/></svg></div>
+  </div>
+  <div class="intro-names script" id="introNames">Adrián &amp; Irene</div>
+  <div class="intro-hint">ABRIENDO TU INVITACIÓN</div>
+</div>
+
+<main id="main">
+  <section class="hero">
+    <svg class="lotus bg-top" viewBox="-10 0 220 120"><use href="#lotus"/></svg>
+    <svg class="lotus bg-bot" viewBox="-10 0 220 120"><use href="#lotus"/></svg>
+    <div class="kicker">Con inmensa alegría celebramos</div>
+    <div class="fifty">50</div>
+    <div class="sub">ANIVERSARIO</div>
+    <h1 class="names script"><span id="n1">Adrián</span><span class="amp">&amp;</span><span id="n2">Irene</span></h1>
+    <p class="lede">Cincuenta años tomados de la mano. Nos encantaría que nos acompañes a celebrar este momento.</p>
+    <a class="cue" id="cue" href="#cuenta" aria-label="Desliza hacia abajo">
+      DESLIZA
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9l7 7 7-7"/></svg>
+    </a>
+  </section>
+
+  <section id="cuenta">
+    <h2 class="fade">Faltan</h2>
+    <svg class="lotus orn fade" viewBox="-10 0 220 120" style="color:var(--gold)"><use href="#lotus"/></svg>
+    <div class="cd fade">
+      <div><span class="n" id="cd-d">00</span><span class="l">DÍAS</span></div>
+      <div><span class="n" id="cd-h">00</span><span class="l">HORAS</span></div>
+      <div><span class="n" id="cd-m">00</span><span class="l">MIN</span></div>
+      <div><span class="n" id="cd-s">00</span><span class="l">SEG</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="fade">La celebración</h2>
+    <svg class="lotus orn fade" viewBox="-10 0 220 120"><use href="#lotus"/></svg>
+    <div class="info fade">
+      <div><div class="t">Fecha</div><div class="d" id="fechaTxt">Sábado 13 de diciembre, 2026</div></div>
+      <div><div class="t">Hora</div><div class="d">2:00 p.m.</div></div>
+      <div><div class="t">Lugar</div><div class="d">Salón Jardín Dorado<br>Av. Principal 123, Cuernavaca</div></div>
+    </div>
+    <a class="btn-line fade" href="https://maps.google.com" target="_blank" rel="noopener">VER UBICACIÓN</a>
+  </section>
+
+  <section>
+    <h2 class="fade">Encuentra tu mesa</h2>
+    <svg class="lotus orn fade" viewBox="-10 0 220 120"><use href="#lotus"/></svg>
+    <div class="finder-wrap fade">
+      <label class="field-label" for="guestInput">Nombre del invitado</label>
+      <input id="guestInput" type="text" placeholder="Escribe tu nombre" autocomplete="off" aria-label="Busca tu nombre para consultar tu mesa" aria-autocomplete="list" aria-controls="sug" aria-expanded="false" role="combobox" disabled>
+      <div id="sug" role="listbox"></div>
+      <p class="private-status" id="finderStatus" role="status" aria-live="polite">Cargando los datos de tu mesa…</p>
+      <div id="result" style="text-align:center">
+        <div class="hi">Bienvenido(a)</div>
+        <div class="nm" id="rName">—</div>
+        <div class="tb" id="rTable">—</div>
+        <small>TU MESA ASIGNADA</small>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="fade">Confirma tu asistencia</h2>
+    <svg class="lotus orn fade" viewBox="-10 0 220 120"><use href="#lotus"/></svg>
+    <p class="rsvp-t fade">Tu presencia hará este día aún más especial. Confírmanos antes de la fecha para prepararte un lugar con cariño.</p>
+    <div class="fade">
+      <button class="btn" id="btnConfirm" disabled>
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.48A11.94 11.94 0 0012.04 0C5.5 0 .2 5.3.2 11.84c0 2.09.55 4.13 1.6 5.93L0 24l6.4-1.68a11.8 11.8 0 005.64 1.44h.01c6.54 0 11.85-5.3 11.85-11.84 0-3.16-1.23-6.13-3.38-8.44zM12.05 21.6a9.7 9.7 0 01-4.95-1.36l-.35-.21-3.8 1 1.01-3.7-.23-.38a9.75 9.75 0 01-1.5-5.2c0-5.4 4.4-9.8 9.83-9.8 2.62 0 5.08 1.02 6.94 2.88a9.75 9.75 0 012.87 6.93c0 5.42-4.4 9.84-9.82 9.84zm5.4-7.36c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.66.15-.2.3-.76.96-.93 1.16-.17.2-.34.22-.63.07-.3-.15-1.24-.46-2.36-1.46-.87-.78-1.46-1.74-1.63-2.04-.17-.3-.02-.46.13-.6.13-.14.3-.35.44-.53.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.66-1.6-.9-2.18-.24-.58-.48-.5-.66-.5h-.56c-.2 0-.52.07-.79.37-.27.3-1.04 1.01-1.04 2.47s1.06 2.87 1.21 3.07c.15.2 2.09 3.2 5.08 4.48.7.3 1.26.48 1.68.62.7.22 1.35.19 1.85.12.57-.09 1.75-.72 2-1.4.25-.7.25-1.3.17-1.4-.07-.13-.27-.2-.57-.35z"/></svg>
+        CONFIRMAR ASISTENCIA
+      </button>
+      <div class="hint" id="rsvpHint">Se abrirá WhatsApp con un mensaje ya redactado</div>
+      <p class="private-status" id="rsvpStatus" role="status" aria-live="polite">Cargando los datos de confirmación…</p>
+    </div>
+  </section>
+
+  <footer>
+    <svg class="lotus bg-bot" viewBox="-10 0 220 120"><use href="#lotus"/></svg>
+    <div class="fh script">Gracias por ser parte de nuestra historia</div>
+    <div class="fs">ADRIÁN &amp; IRENE · 50 AÑOS JUNTOS</div>
+  </footer>
+</main>
+
+<script>
+const CONFIG={nombre1:"Adrián",nombre2:"Irene",fechaEvento:"2026-12-13T14:00:00",fechaTexto:"Sábado 13 de diciembre, 2026"};
+const $=id=>document.getElementById(id);
+let GUESTS=[];
+let whatsappNumero='';
+$('n1').textContent=CONFIG.nombre1;$('n2').textContent=CONFIG.nombre2;
+$('introNames').textContent=CONFIG.nombre1+' & '+CONFIG.nombre2;$('fechaTxt').textContent=CONFIG.fechaTexto;
+
+function decodeBase64Url(value){
+  const base64=value.replace(/-/g,'+').replace(/_/g,'/');
+  return Uint8Array.from(atob(base64+'='.repeat((4-base64.length%4)%4)),c=>c.charCodeAt(0));
+}
+
+async function loadPrivateData(){
+  const access=new URLSearchParams(location.hash.slice(1)).get('access');
+  if(!access)throw new Error('missing-link-key');
+  const response=await fetch('datos-privados.enc.json');
+  if(!response.ok)throw new Error('encrypted-data-unavailable');
+  const envelope=await response.json();
+  if(envelope.version!==1)throw new Error('unsupported-data-version');
+  const key=await crypto.subtle.importKey('raw',decodeBase64Url(access),{name:'AES-GCM'},false,['decrypt']);
+  const clear=await crypto.subtle.decrypt({
+    name:'AES-GCM',
+    iv:decodeBase64Url(envelope.iv),
+    additionalData:new TextEncoder().encode('invitacion-bodas-oro:v1')
+  },key,decodeBase64Url(envelope.ciphertext));
+  const data=JSON.parse(new TextDecoder().decode(clear));
+  if(!/^\d{8,15}$/.test(data.whatsappNumero)||!Array.isArray(data.invitados)||
+    data.invitados.some(g=>typeof g.nombre!=='string'||!Number.isInteger(g.mesa))) {
+    throw new Error('invalid-private-data');
+  }
+  GUESTS=data.invitados;
+  whatsappNumero=data.whatsappNumero;
+  $('guestInput').disabled=false;
+  $('btnConfirm').disabled=false;
+  $('finderStatus').textContent='';
+  $('rsvpStatus').textContent='';
+}
+
+loadPrivateData().catch(()=>{
+  const message='Abre la invitación desde el enlace completo que recibiste para consultar tu mesa y confirmar por WhatsApp.';
+  $('finderStatus').textContent=message;
+  $('rsvpStatus').textContent=message;
+  $('rsvpHint').hidden=true;
+});
+
+/* Sobre: se abre solo */
+window.addEventListener('load',()=>{
+  setTimeout(()=>$('env').classList.add('open'),1400);
+  setTimeout(()=>{
+    $('intro').classList.add('gone');
+    document.body.classList.remove('lock');
+    $('main').classList.add('show');
+    startReveal();startCountdown();
+    setTimeout(()=>$('cue').classList.add('on'),1600);
+  },3600);
+});
+
+/* Indicador de deslizar */
+addEventListener('scroll',()=>{$('cue').classList.toggle('off',scrollY>80)},{passive:true});
+$('cue').addEventListener('click',e=>{e.preventDefault();$('cuenta').scrollIntoView({behavior:'smooth'});});
+
+function startReveal(){
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
+  document.querySelectorAll('.fade').forEach(el=>io.observe(el));
+}
+
+function startCountdown(){
+  const t=new Date(CONFIG.fechaEvento).getTime();
+  const p=n=>String(n).padStart(2,'0');
+  const tick=()=>{let d=Math.max(0,t-Date.now());
+    $('cd-d').textContent=p(Math.floor(d/864e5));
+    $('cd-h').textContent=p(Math.floor(d/36e5%24));
+    $('cd-m').textContent=p(Math.floor(d/6e4%60));
+    $('cd-s').textContent=p(Math.floor(d/1e3%60));};
+  tick();setInterval(tick,1000);
+}
+
+/* Buscador de mesa */
+const inp=$('guestInput'),sug=$('sug'),res=$('result');let sel=null;
+function closeSuggestions(){sug.classList.remove('open');inp.setAttribute('aria-expanded','false')}
+inp.addEventListener('input',()=>{
+  const q=inp.value.trim().toLowerCase();sel=null;res.classList.remove('show');
+  if(!q){closeSuggestions();sug.innerHTML='';return}
+  const m=GUESTS.filter(g=>g.nombre.toLowerCase().includes(q)).slice(0,8);
+  sug.innerHTML='';
+  if(!m.length)sug.innerHTML='<div class="nomatch">No encontramos ese nombre. Prueba con otra parte del nombre.</div>';
+  else m.forEach(g=>{const d=document.createElement('button');d.type='button';d.className='s';d.setAttribute('role','option');
+    const i=g.nombre.toLowerCase().indexOf(q);
+    d.innerHTML=g.nombre.slice(0,i)+'<b>'+g.nombre.slice(i,i+q.length)+'</b>'+g.nombre.slice(i+q.length);
+    d.onclick=()=>pick(g);sug.appendChild(d)});
+  sug.classList.add('open');inp.setAttribute('aria-expanded','true');
+});
+inp.addEventListener('keydown',e=>{
+  const options=sug.querySelectorAll('button');
+  if(e.key==='ArrowDown'&&options.length){e.preventDefault();options[0].focus()}
+  if(e.key==='Escape')closeSuggestions();
+  if(e.key==='Enter'&&options.length===1){e.preventDefault();options[0].click()}
+});
+ sug.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&e.target.closest('button.s')){e.preventDefault();e.target.closest('button.s').click();return}
+  if(e.key!=='ArrowDown'&&e.key!=='ArrowUp')return;
+  const options=[...sug.querySelectorAll('button')];
+  const current=options.indexOf(document.activeElement);
+  if(!options.length)return;
+  e.preventDefault();options[(current+(e.key==='ArrowDown'?1:-1)+options.length)%options.length].focus();
+});
+function pick(g){
+  sel=g;inp.value=g.nombre;closeSuggestions();inp.focus();
+  $('rName').textContent=g.nombre;$('rTable').textContent='Mesa '+g.mesa;
+  res.classList.remove('show');void res.offsetWidth;res.classList.add('show');
+}
+document.addEventListener('click',e=>{if(!e.target.closest('.finder-wrap'))closeSuggestions()});
+
+/* WhatsApp */
+$('btnConfirm').addEventListener('click',()=>{
+  if(!whatsappNumero)return;
+  let m='Hola, confirmo mi asistencia '+CONFIG.nombre1+' e '+CONFIG.nombre2+'.';
+  if(sel)m+=' Mi nombre es '+sel.nombre+' (Mesa '+sel.mesa+').';
+  window.open('https://wa.me/'+whatsappNumero+'?text='+encodeURIComponent(m),'_blank','noopener');
+});
+</script>
+</body>
+</html>
