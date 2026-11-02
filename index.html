@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light">
-<title>Aniversario · Adrián &amp; Irene</title>
+<title>Aniversario · Adrián e Irene</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400&family=Pinyon+Script&display=swap" rel="stylesheet">
@@ -144,7 +144,7 @@ footer .fs{position:relative;margin-top:10px;font-size:.66rem;letter-spacing:.3e
     <div class="env-fold"></div>
     <div class="seal"><svg viewBox="-10 0 220 120"><use href="#lotus"/></svg></div>
   </div>
-  <div class="intro-names script" id="introNames">Adrián &amp; Irene</div>
+  <div class="intro-names script" id="introNames">Adrián e Irene</div>
   <div class="intro-hint">ABRIENDO TU INVITACIÓN</div>
 </div>
 
@@ -155,7 +155,7 @@ footer .fs{position:relative;margin-top:10px;font-size:.66rem;letter-spacing:.3e
     <div class="kicker">Con inmensa alegría celebramos</div>
     <div class="fifty">50</div>
     <div class="sub">ANIVERSARIO</div>
-    <h1 class="names script"><span id="n1">Adrián</span><span class="amp">&amp;</span><span id="n2">Irene</span></h1>
+    <h1 class="names script"><span id="n1">Adrián</span><span class="amp">e</span><span id="n2">Irene</span></h1>
     <p class="lede">Cincuenta años tomados de la mano. Nos encantaría que nos acompañes a celebrar este momento.</p>
     <a class="cue" id="cue" href="#cuenta" aria-label="Desliza hacia abajo">
       DESLIZA
@@ -178,23 +178,19 @@ footer .fs{position:relative;margin-top:10px;font-size:.66rem;letter-spacing:.3e
     <h2 class="fade">La celebración</h2>
     <svg class="lotus orn fade" viewBox="-10 0 220 120"><use href="#lotus"/></svg>
     <div class="info fade">
-      <div><div class="t">Fecha</div><div class="d" id="fechaTxt">Sábado 13 de diciembre, 2026</div></div>
+      <div><div class="t">Fecha</div><div class="d" id="fechaTxt">Domingo 13 de diciembre, 2026</div></div>
       <div><div class="t">Hora</div><div class="d">2:00 p.m.</div></div>
-      <div><div class="t">Lugar</div><div class="d">Salón Jardín Dorado<br>Av. Principal 123, Cuernavaca</div></div>
+      <div><div class="t">Lugar</div><div class="d">Jardín Las Palmas<br>Gardenias, Las Rosas, 62586 Temixco, Mor.</div></div>
     </div>
-    <a class="btn-line fade" href="https://maps.google.com" target="_blank" rel="noopener">VER UBICACIÓN</a>
+    <a class="btn-line fade" href="https://maps.google.com/maps?vet=10CAAQoqAOahcKEwjIp5PtjOiXAxUAAAAAHQAAAAAQDA..i&sca_esv=0e0bb46fe76f3ac9&udm&fvr=1&pvq=Cg0vZy8xMWJ4YzV0bWo5IhcKEWphcmRpbiBsYXMgcGFsbWFzEAIYAw&lqi=CiJqYXJkaW4gbGFzIHBhbG1hcyBBQ0FUTElQQSBURU1JWENPSImc87LxqoCACFo-EAAQARACGAAYARgCGAMYBCIiamFyZGluIGxhcyBwYWxtYXMgYWNhdGxpcGEgdGVtaXhjbyoICAIQABABEAKSAQVzdG9yZQ&cs=1&um=1&ie=UTF-8&fb=1&gl=mx&sa=X&ftid=0x85cdd8f9c8ab7f55:0x16868fc98dd1149c" target="_blank" rel="noopener">VER UBICACIÓN</a>
   </section>
 
   <section>
     <h2 class="fade">Encuentra tu mesa</h2>
     <svg class="lotus orn fade" viewBox="-10 0 220 120"><use href="#lotus"/></svg>
     <div class="finder-wrap fade">
-      <div class="access-panel" id="accessPanel">
-        <label class="access-label" for="accessCode">Código de acceso</label>
-        <input id="accessCode" type="password" placeholder="Escribe el código que recibiste" autocomplete="one-time-code" spellcheck="false" aria-describedby="accessStatus">
-        <button class="btn-line access-submit" id="unlockData" type="button">DESBLOQUEAR</button>
-        <p class="private-status" id="accessStatus" role="status" aria-live="polite">Ingresa el código que te compartieron para consultar tu mesa y confirmar.</p>
-      </div>
+      <div id="accessPanel" hidden></div>
+      <p class="private-status" id="accessStatus" role="status" aria-live="polite"></p>
       <label class="field-label" for="guestInput">Nombre del invitado</label>
       <input id="guestInput" type="text" placeholder="Escribe tu nombre" autocomplete="off" aria-label="Busca tu nombre para consultar tu mesa" aria-autocomplete="list" aria-controls="sug" aria-expanded="false" role="combobox" disabled>
       <div id="sug" role="listbox"></div>
@@ -225,17 +221,17 @@ footer .fs{position:relative;margin-top:10px;font-size:.66rem;letter-spacing:.3e
   <footer>
     <svg class="lotus bg-bot" viewBox="-10 0 220 120"><use href="#lotus"/></svg>
     <div class="fh script">Gracias por ser parte de nuestra historia</div>
-    <div class="fs">ADRIÁN &amp; IRENE · 50 AÑOS JUNTOS</div>
+    <div class="fs">ADRIÁN e IRENE · 50 AÑOS JUNTOS</div>
   </footer>
 </main>
 
 <script>
-const CONFIG={nombre1:"Adrián",nombre2:"Irene",fechaEvento:"2026-12-13T14:00:00",fechaTexto:"Sábado 13 de diciembre, 2026"};
+const CONFIG={nombre1:"Adrián",nombre2:"Irene",fechaEvento:"2026-12-13T14:00:00",fechaTexto:"Domingo 13 de diciembre, 2026"};
 const $=id=>document.getElementById(id);
 let GUESTS=[];
 let whatsappNumero='';
 $('n1').textContent=CONFIG.nombre1;$('n2').textContent=CONFIG.nombre2;
-$('introNames').textContent=CONFIG.nombre1+' & '+CONFIG.nombre2;$('fechaTxt').textContent=CONFIG.fechaTexto;
+$('introNames').textContent=CONFIG.nombre1+' e '+CONFIG.nombre2;$('fechaTxt').textContent=CONFIG.fechaTexto;
 
 function decodeBase64Url(value){
   const base64=value.replace(/-/g,'+').replace(/_/g,'/');
@@ -275,28 +271,28 @@ async function loadPrivateData(access){
   $('rsvpStatus').textContent='';
 }
 
-async function activatePrivateData(){
-  const button=$('unlockData');
-  button.disabled=true;
-  button.textContent='VERIFICANDO…';
-  $('accessStatus').textContent='Verificando el código…';
+/* Clave desde la URL: ?key=... */
+async function tryUrlKey(){
+  const params=new URLSearchParams(location.search);
+  const key=params.get('key');
+  if(!key){
+    $('accessStatus').textContent='Enlace inválido. Usa el enlace personalizado que recibiste.';
+    $('guestInput').placeholder='Enlace inválido';
+    return;
+  }
   try{
-    await loadPrivateData($('accessCode').value);
+    await loadPrivateData(key);
   }catch(error){
-    let message='No se pudieron cargar los datos. Comprueba tu conexión e inténtalo de nuevo.';
-    if(error.message==='invalid-link-key'||error.message==='wrong-access-code')message='El código no es correcto. Revísalo e inténtalo de nuevo.';
-    else if(error.message==='crypto-unavailable')message='Este navegador no permite abrir los datos protegidos. Prueba con Chrome o Safari actualizado.';
-    $('accessStatus').textContent=message;
-  }finally{
-    if(!$('accessPanel').hidden){button.disabled=false;button.textContent='DESBLOQUEAR'}
+    let msg='Este enlace no es válido o ha expirado.';
+    if(error.message==='crypto-unavailable')msg='Este navegador no permite abrir los datos protegidos. Prueba con Chrome o Safari actualizado.';
+    $('accessStatus').textContent=msg;
+    $('guestInput').placeholder='Enlace no válido';
   }
 }
 
-$('unlockData').addEventListener('click',activatePrivateData);
-$('accessCode').addEventListener('keydown',e=>{if(e.key==='Enter')activatePrivateData()});
-
 /* Sobre: se abre solo */
 window.addEventListener('load',()=>{
+  tryUrlKey();
   setTimeout(()=>$('env').classList.add('open'),1400);
   setTimeout(()=>{
     $('intro').classList.add('gone');
