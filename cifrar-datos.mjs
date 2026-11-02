@@ -52,4 +52,4 @@ await writeFile(outputPath, JSON.stringify({
   ciphertext: encrypted.toString('base64url')
 }, null, 2) + '\n');
 console.log(`Archivo cifrado y verificado: ${path.basename(outputPath)}`);
-console.log('Código de acceso guardado en .invite-key. Compártelo en un mensaje separado, nunca en la URL.');
+console.log('Código de acceso guardado en .invite-key. Úsalo solo en enlaces personalizados y compártelos en privado.');

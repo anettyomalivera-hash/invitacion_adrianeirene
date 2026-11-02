@@ -48,7 +48,8 @@ section{position:relative;max-width:520px;margin:0 auto;padding:84px 32px;text-a
 .hero .bg-top{position:absolute;z-index:0;width:min(130vw,640px);top:-60px;left:50%;transform:translateX(-50%) rotate(180deg);color:var(--rose);opacity:.2}
 .hero .bg-bot{position:absolute;z-index:0;width:min(150vw,720px);bottom:-70px;left:50%;transform:translateX(-50%);color:var(--sage);opacity:.24}
 .kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;color:var(--rose)}
-.aniv-title{font-family:'Pinyon Script',cursive;font-size:clamp(5.5rem,24vw,10rem);line-height:1.05;color:var(--gold);margin:14px 0 4px;text-shadow:0 4px 28px rgba(179,138,64,.22)}
+.aniv-title{max-width:100%;padding:0 .08em .12em;font-family:'Pinyon Script',cursive;font-size:clamp(3rem,16.5vw,8rem);line-height:1.35;white-space:nowrap;margin:4px 0 -12px;background:linear-gradient(110deg,var(--gold) 0%,#FFF2BD 12%,var(--gold) 22%,var(--gold) 42%,#FFF7D6 52%,var(--gold) 62%,var(--gold) 100%);background-size:250% 100%;background-position:100% 50%;-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 4px 14px rgba(179,138,64,.22));animation:title-shimmer 4s ease-in-out infinite}
+@keyframes title-shimmer{to{background-position:0 50%}}
 
 .names{margin-top:30px;font-size:3.1rem;line-height:1.05;color:var(--ink)}
 .names .amp{display:block;font-size:2.4rem;color:var(--sage);margin:2px 0}
@@ -110,11 +111,16 @@ footer{position:relative;overflow:hidden;text-align:center;padding:60px 24px 110
 footer .bg-bot{position:absolute;width:min(130vw,640px);left:50%;bottom:-60px;transform:translateX(-50%);opacity:.18}
 footer .fh{position:relative;font-size:2.2rem;color:var(--gold)}
 footer .fs{position:relative;margin-top:10px;font-size:.66rem;letter-spacing:.3em;color:var(--mute)}
+#sparkles{position:fixed;inset:0;z-index:40;overflow:hidden;pointer-events:none}
+.scroll-sparkle{position:absolute;color:#C49A4A;font-size:14px;line-height:1;text-shadow:0 0 10px rgba(255,235,174,.9);animation:scroll-sparkle 950ms ease-out both}
+@keyframes scroll-sparkle{0%{opacity:0;transform:translateY(12px) scale(.3) rotate(0)}25%{opacity:.9}100%{opacity:0;transform:translateY(-42px) scale(1.15) rotate(70deg)}}
 :focus-visible{outline:2px solid var(--gold);outline-offset:3px}
-@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}#sparkles{display:none}}
 </style>
 </head>
 <body class="lock">
+
+<div id="sparkles" aria-hidden="true"></div>
 
 <!-- Loto reutilizable -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -255,8 +261,7 @@ async function loadPrivateData(access){
     throw new Error('invalid-private-data');
   }
   GUESTS=data.invitados;
-  whatsappNumero=typeof data.whatsappNumero==='string'&&/^\d{8,15}$/.test(data.whatsappNumero)
-    ?data.whatsappNumero:'';
+  whatsappNumero=normalizeWhatsAppNumber(data.whatsappNumero);
   $('guestInput').disabled=false;
   $('btnConfirm').disabled=!whatsappNumero;
   $('rsvpHint').textContent=whatsappNumero
@@ -265,6 +270,13 @@ async function loadPrivateData(access){
   $('accessStatus').textContent='';
   $('finderStatus').textContent='';
   $('rsvpStatus').textContent='';
+}
+
+function normalizeWhatsAppNumber(value){
+  if(typeof value!=='string'||!/^\+?[\d\s().-]+$/.test(value.trim()))return '';
+  const digits=value.replace(/\D/g,'');
+  if(digits.length===10)return '52'+digits;
+  return digits.length>=11&&digits.length<=15?digits:'';
 }
 
 function accessErrorMessage(error){
@@ -308,6 +320,26 @@ window.addEventListener('load',()=>{
 /* Indicador de deslizar */
 addEventListener('scroll',()=>{$('cue').classList.toggle('off',scrollY>80)},{passive:true});
 $('cue').addEventListener('click',e=>{e.preventDefault();$('cuenta').scrollIntoView({behavior:'smooth'});});
+
+let lastSparkleTime=0;
+addEventListener('scroll',()=>{
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const now=performance.now();
+  if(now-lastSparkleTime<180)return;
+  lastSparkleTime=now;
+  const layer=$('sparkles');
+  const edge=scrollY>0?innerHeight-28:28;
+  for(let i=0;i<3;i++){
+    const sparkle=document.createElement('span');
+    sparkle.className='scroll-sparkle';
+    sparkle.textContent='✦';
+    sparkle.style.left=Math.round(12+Math.random()*(innerWidth-24))+'px';
+    sparkle.style.top=Math.round(edge+(Math.random()*32-16))+'px';
+    sparkle.style.animationDelay=(Math.random()*100)+'ms';
+    sparkle.addEventListener('animationend',()=>sparkle.remove(),{once:true});
+    layer.appendChild(sparkle);
+  }
+},{passive:true});
 
 function startReveal(){
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
