@@ -92,10 +92,6 @@ h2{font-size:2.1rem;color:var(--sage-d)}
 .nomatch{padding:14px 18px;color:var(--mute);font-size:.85rem;text-align:center}
 .private-status{margin:14px 0 0;color:var(--mute);font-size:.82rem;line-height:1.6}
 .private-status:empty{display:none}
-.access-panel{margin:0 0 30px;padding:18px;border:1px solid rgba(169,95,105,.24);border-radius:8px;background:linear-gradient(145deg,#fff,var(--rose-pale));text-align:left}
-.access-label{display:block;margin-bottom:8px;color:var(--sage-d);font-size:.72rem;letter-spacing:.12em}
-#accessCode{display:block;width:100%;height:48px;padding:12px 14px;border:1px solid rgba(169,95,105,.42);border-radius:5px;background:#fff;color:var(--ink);font:400 1rem 'Jost',sans-serif;letter-spacing:.04em}
-#accessCode:focus{outline:2px solid rgba(169,95,105,.28);border-color:var(--rose)}
 .access-submit{display:flex;width:100%;justify-content:center;margin-top:12px}
 #result{display:none;margin-top:34px}
 #result.show{display:block;animation:rise 1s both}
@@ -152,7 +148,7 @@ footer .fs{position:relative;margin-top:10px;font-size:.66rem;letter-spacing:.3e
   <section class="hero">
     <svg class="lotus bg-top" viewBox="-10 0 220 120"><use href="#lotus"/></svg>
     <svg class="lotus bg-bot" viewBox="-10 0 220 120"><use href="#lotus"/></svg>
-    <div class="kicker">Con inmensa alegría celebramos</div>
+    <div class="kicker">Con inmensa alegría celebramos nuestro</div>
     <div class="aniv-title">Aniversario</div>
     <h1 class="names script"><span id="n1">Adrián</span><span class="amp">e</span><span id="n2">Irene</span></h1>
     <p class="lede">Un amor que crece con cada año. Nos encantaría que nos acompañes a celebrar este momento.</p>
@@ -188,13 +184,6 @@ footer .fs{position:relative;margin-top:10px;font-size:.66rem;letter-spacing:.3e
     <h2 class="fade">Encuentra tu mesa</h2>
     <svg class="lotus orn fade" viewBox="-10 0 220 120"><use href="#lotus"/></svg>
     <div class="finder-wrap fade">
-      <div id="accessPanel" class="access-panel" hidden>
-        <form id="accessForm">
-          <label class="access-label" for="accessCode">Código de acceso</label>
-          <input id="accessCode" type="password" autocomplete="off" required>
-          <button class="btn access-submit" id="accessSubmit" type="submit">CONTINUAR</button>
-        </form>
-      </div>
       <p class="private-status" id="accessStatus" role="status" aria-live="polite"></p>
       <label class="field-label" for="guestInput">Nombre del invitado</label>
       <input id="guestInput" type="text" placeholder="Escribe tu nombre" autocomplete="off" aria-label="Busca tu nombre para consultar tu mesa" aria-autocomplete="list" aria-controls="sug" aria-expanded="false" role="combobox" disabled>
@@ -270,7 +259,6 @@ async function loadPrivateData(access){
     ?data.whatsappNumero:'';
   $('guestInput').disabled=false;
   $('btnConfirm').disabled=!whatsappNumero;
-  $('accessPanel').hidden=true;
   $('rsvpHint').textContent=whatsappNumero
     ?'Tu asistencia se confirmará por WhatsApp'
     :'La confirmación por WhatsApp no está disponible en este momento.';
@@ -280,11 +268,10 @@ async function loadPrivateData(access){
 }
 
 function accessErrorMessage(error){
-  if(error.message==='crypto-unavailable')return 'Este navegador no permite abrir los datos protegidos. Prueba con Chrome o Safari actualizado.';
-  if(error.message==='wrong-access-code'||error.message==='invalid-link-key')return 'El código de acceso es incorrecto.';
-  if(error.message==='encrypted-data-unavailable')return 'No se pudieron cargar los datos protegidos. Inténtalo más tarde.';
-  if(error.message==='invalid-private-data'||error.message==='unsupported-data-version')return 'Los datos protegidos publicados no son válidos.';
-  return 'No se pudo validar el acceso. Comprueba tu conexión e inténtalo de nuevo.';
+  if(error.message==='crypto-unavailable')return 'No se pudo cargar la información en este navegador. Prueba con Chrome o Safari actualizado.';
+  if(error.message==='encrypted-data-unavailable')return 'No se pudo cargar la lista de invitados. Comprueba tu conexión e inténtalo de nuevo.';
+  if(error.message==='invalid-private-data'||error.message==='unsupported-data-version')return 'No se pudo cargar la lista de invitados. Inténtalo más tarde.';
+  return 'No se pudo cargar la lista de invitados. Abre de nuevo el enlace de invitación.';
 }
 
 /* Clave desde la URL: ?key=... */
@@ -292,9 +279,7 @@ async function tryUrlKey(){
   const params=new URLSearchParams(location.search);
   const key=params.get('key');
   if(!key){
-    $('accessPanel').hidden=false;
-    $('accessStatus').textContent='Ingresa el código de acceso que recibiste por separado.';
-    $('guestInput').placeholder='Ingresa el código para continuar';
+    $('accessStatus').textContent='Abre de nuevo el enlace de invitación para consultar tu mesa.';
     return;
   }
   try{
@@ -303,25 +288,9 @@ async function tryUrlKey(){
     const query=params.toString();
     history.replaceState(null,'',location.pathname+(query?'?'+query:'')+location.hash);
   }catch(error){
-    $('accessPanel').hidden=false;
     $('accessStatus').textContent=accessErrorMessage(error);
-    $('guestInput').placeholder='Enlace no válido';
   }
 }
-
-$('accessForm').addEventListener('submit',async event=>{
-  event.preventDefault();
-  const submit=$('accessSubmit');
-  submit.disabled=true;
-  try{
-    await loadPrivateData($('accessCode').value);
-  }catch(error){
-    $('accessStatus').textContent=accessErrorMessage(error);
-    $('accessCode').select();
-  }finally{
-    submit.disabled=false;
-  }
-});
 
 /* Sobre: se abre solo */
 window.addEventListener('load',()=>{
