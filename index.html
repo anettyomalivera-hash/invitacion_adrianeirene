@@ -99,6 +99,7 @@ h2{font-size:2.1rem;color:var(--sage-d)}
 #result .hi{font:italic 1.1rem 'Cormorant Garamond',serif;color:var(--sage)}
 #result .nm{font:400 1.7rem 'Cormorant Garamond',serif;margin-top:4px}
 #result .tb{font:300 4.2rem/1 'Cormorant Garamond',serif;color:var(--gold);margin-top:14px}
+#result .ps{font:400 1.6rem/1.2 'Cormorant Garamond',serif;color:var(--sage-d);margin-top:20px}
 #result small{display:block;font-size:.62rem;letter-spacing:.3em;color:var(--mute)}
 
 .rsvp-t{max-width:300px;margin:0 auto 28px;font:italic 300 1.1rem/1.7 'Cormorant Garamond',serif;color:var(--mute)}
@@ -195,11 +196,13 @@ footer .fs{position:relative;margin-top:10px;font-size:.66rem;letter-spacing:.3e
       <input id="guestInput" type="text" placeholder="Escribe tu nombre" autocomplete="off" aria-label="Busca tu nombre para consultar tu mesa" aria-autocomplete="list" aria-controls="sug" aria-expanded="false" role="combobox" disabled>
       <div id="sug" role="listbox"></div>
       <p class="private-status" id="finderStatus" role="status" aria-live="polite"></p>
-      <div id="result" style="text-align:center">
+      <div id="result" style="text-align:center" role="status" aria-live="polite">
         <div class="hi">Bienvenido(a)</div>
         <div class="nm" id="rName">—</div>
         <div class="tb" id="rTable">—</div>
         <small>TU MESA ASIGNADA</small>
+        <div class="ps" id="rPasses">—</div>
+        <small>PASES PARA TU GRUPO</small>
       </div>
     </div>
   </section>
@@ -257,7 +260,8 @@ async function loadPrivateData(access){
   }catch{throw new Error('wrong-access-code')}
   const data=JSON.parse(new TextDecoder().decode(clear));
   if(!Array.isArray(data.invitados)||
-    data.invitados.some(g=>typeof g.nombre!=='string'||!Number.isInteger(g.mesa))) {
+    data.invitados.some(g=>typeof g.nombre!=='string'||!Number.isInteger(g.mesa)||
+      !Number.isInteger(g.pases)||g.pases<1)) {
     throw new Error('invalid-private-data');
   }
   GUESTS=data.invitados;
@@ -389,6 +393,7 @@ inp.addEventListener('keydown',e=>{
 function pick(g){
   sel=g;inp.value=g.nombre;closeSuggestions();inp.focus();
   $('rName').textContent=g.nombre;$('rTable').textContent='Mesa '+g.mesa;
+  $('rPasses').textContent=g.pases+' '+(g.pases===1?'pase':'pases');
   res.classList.remove('show');void res.offsetWidth;res.classList.add('show');
 }
 document.addEventListener('click',e=>{if(!e.target.closest('.finder-wrap'))closeSuggestions()});
