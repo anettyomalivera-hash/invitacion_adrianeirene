@@ -188,7 +188,13 @@ footer .fs{position:relative;margin-top:10px;font-size:.66rem;letter-spacing:.3e
     <h2 class="fade">Encuentra tu mesa</h2>
     <svg class="lotus orn fade" viewBox="-10 0 220 120"><use href="#lotus"/></svg>
     <div class="finder-wrap fade">
-      <div id="accessPanel" hidden></div>
+      <div id="accessPanel" class="access-panel" hidden>
+        <form id="accessForm">
+          <label class="access-label" for="accessCode">Código de acceso</label>
+          <input id="accessCode" type="password" autocomplete="off" required>
+          <button class="btn access-submit" id="accessSubmit" type="submit">CONTINUAR</button>
+        </form>
+      </div>
       <p class="private-status" id="accessStatus" role="status" aria-live="polite"></p>
       <label class="field-label" for="guestInput">Nombre del invitado</label>
       <input id="guestInput" type="text" placeholder="Escribe tu nombre" autocomplete="off" aria-label="Busca tu nombre para consultar tu mesa" aria-autocomplete="list" aria-controls="sug" aria-expanded="false" role="combobox" disabled>
@@ -255,19 +261,30 @@ async function loadPrivateData(access){
     },key,decodeBase64Url(envelope.ciphertext));
   }catch{throw new Error('wrong-access-code')}
   const data=JSON.parse(new TextDecoder().decode(clear));
-  if(!/^\d{8,15}$/.test(data.whatsappNumero)||!Array.isArray(data.invitados)||
+  if(!Array.isArray(data.invitados)||
     data.invitados.some(g=>typeof g.nombre!=='string'||!Number.isInteger(g.mesa))) {
     throw new Error('invalid-private-data');
   }
   GUESTS=data.invitados;
-  whatsappNumero=data.whatsappNumero;
+  whatsappNumero=typeof data.whatsappNumero==='string'&&/^\d{8,15}$/.test(data.whatsappNumero)
+    ?data.whatsappNumero:'';
   $('guestInput').disabled=false;
-  $('btnConfirm').disabled=false;
+  $('btnConfirm').disabled=!whatsappNumero;
   $('accessPanel').hidden=true;
-  $('rsvpHint').textContent='Tu asistencia se confirmará por WhatsApp';
+  $('rsvpHint').textContent=whatsappNumero
+    ?'Tu asistencia se confirmará por WhatsApp'
+    :'La confirmación por WhatsApp no está disponible en este momento.';
   $('accessStatus').textContent='';
   $('finderStatus').textContent='';
   $('rsvpStatus').textContent='';
+}
+
+function accessErrorMessage(error){
+  if(error.message==='crypto-unavailable')return 'Este navegador no permite abrir los datos protegidos. Prueba con Chrome o Safari actualizado.';
+  if(error.message==='wrong-access-code'||error.message==='invalid-link-key')return 'El código de acceso es incorrecto.';
+  if(error.message==='encrypted-data-unavailable')return 'No se pudieron cargar los datos protegidos. Inténtalo más tarde.';
+  if(error.message==='invalid-private-data'||error.message==='unsupported-data-version')return 'Los datos protegidos publicados no son válidos.';
+  return 'No se pudo validar el acceso. Comprueba tu conexión e inténtalo de nuevo.';
 }
 
 /* Clave desde la URL: ?key=... */
@@ -275,19 +292,36 @@ async function tryUrlKey(){
   const params=new URLSearchParams(location.search);
   const key=params.get('key');
   if(!key){
-    $('accessStatus').textContent='Enlace inválido. Usa el enlace personalizado que recibiste.';
-    $('guestInput').placeholder='Enlace inválido';
+    $('accessPanel').hidden=false;
+    $('accessStatus').textContent='Ingresa el código de acceso que recibiste por separado.';
+    $('guestInput').placeholder='Ingresa el código para continuar';
     return;
   }
   try{
     await loadPrivateData(key);
+    params.delete('key');
+    const query=params.toString();
+    history.replaceState(null,'',location.pathname+(query?'?'+query:'')+location.hash);
   }catch(error){
-    let msg='Este enlace no es válido o ha expirado.';
-    if(error.message==='crypto-unavailable')msg='Este navegador no permite abrir los datos protegidos. Prueba con Chrome o Safari actualizado.';
-    $('accessStatus').textContent=msg;
+    $('accessPanel').hidden=false;
+    $('accessStatus').textContent=accessErrorMessage(error);
     $('guestInput').placeholder='Enlace no válido';
   }
 }
+
+$('accessForm').addEventListener('submit',async event=>{
+  event.preventDefault();
+  const submit=$('accessSubmit');
+  submit.disabled=true;
+  try{
+    await loadPrivateData($('accessCode').value);
+  }catch(error){
+    $('accessStatus').textContent=accessErrorMessage(error);
+    $('accessCode').select();
+  }finally{
+    submit.disabled=false;
+  }
+});
 
 /* Sobre: se abre solo */
 window.addEventListener('load',()=>{
